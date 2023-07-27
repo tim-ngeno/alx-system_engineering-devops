@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# parse the data and sort them by number of visits
+
+awk '{ print $1, $9 }' apache-access.log | sort | uniq -c | sort -rn
