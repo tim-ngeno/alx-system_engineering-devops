@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Tell the story of /etc/passwd
+
+while IFS=":" read -r USERNAME PASSWORD ID GID INFO PATH SHELL
+do
+    echo "The user $USERNAME is part of the $GID gang, lives in $PATH and rides $SHELL. $ID's place is protected by the passcode $PASSWORD, more info about the user here: $INFO"
+done < /etc/passwd
