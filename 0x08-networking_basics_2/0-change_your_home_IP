@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Configure below requirements in /etc/hosts:
+# localhost resolves to 127.0.0.2
+# facebook.com resolves to 8.8.8.8
+
+localhost="127.0.0.2"
+facebook="8.8.8.8"
+
+# Backup /etc/hosts file
+cp /etc/hosts /etc/hosts.backup
+
+# Add the new config to the backup file
+sed -i "s/^127\.0\.0\.1.*$/$localhost localhost/" /etc/hosts.backup
+echo "$facebook facebook.com" >> /etc/hosts.backup
+
+# Copy the modified version back to /etc/hosts
+cat /etc/hosts.backup > /etc/hosts
