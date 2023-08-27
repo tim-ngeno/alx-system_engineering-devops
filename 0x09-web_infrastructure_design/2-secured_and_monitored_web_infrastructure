@@ -1,0 +1,44 @@
+https://imgur.com/a/IQUftS9
+
+
+
+Explanation and Addressing Specifics:
+
+Firewalls:
+- Added for network security, controlling incoming and outgoing traffic.
+
+SSL Certificate (HTTPS):
+- SSL certificate secures the communication between the user's browser and the server using HTTPS.
+
+Monitoring Clients (Data Collectors):
+- Collect data for monitoring, including server performance and user activity.
+
+Load Balancer:
+- Distributes traffic among servers for load balancing and high availability.
+
+Why Firewalls:
+- Firewalls protect against unauthorized access and help create a secure network environment.
+
+Why HTTPS:
+- HTTPS encrypts data in transit, ensuring data confidentiality and preventing eavesdropping and tampering.
+
+Why Monitoring:
+- Monitoring helps track server performance, identify issues, and optimize resources.
+
+How Monitoring Collects Data:
+- Monitoring tools collect data through agents or data collectors installed on servers. They track metrics like CPU, memory, response times, etc.
+
+Monitoring Web Server QPS:
+- To monitor QPS (Queries Per Second), use monitoring tools to track incoming requests and response times on the web server.
+
+
+Issues:
+
+- Terminating SSL at Load Balancer Level:
+This can introduce a security risk as data would be decrypted at the load balancer before being re-encrypted for the internal network.
+
+- Single MySQL Server Accepting Writes:
+If the MySQL server fails, write operations are affected.
+
+- Servers with All Same Components:
+It could result in a single point of failure; if one component fails (e.g., database), all servers are impacted.
