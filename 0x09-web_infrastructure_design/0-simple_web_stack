@@ -1,0 +1,59 @@
+LINK TO THE TASK 0-simple_web_stack:
+https://imgur.com/a/HAMj60w
+
+
+Infrastructure Design:
+
+1. User Wants to Access the Website:
+   - The user types in "www.foobar.com" in their web browser and hits Enter.
+
+2. Domain Name:
+   - "www.foobar.com" is a domain name that serves as a human-readable address for the website.
+   - The Domain Name System (DNS) translates this domain name into an IP address to locate the server.
+
+3. DNS Record:
+   - The "www" in "www.foobar.com" is a subdomain.
+   - The DNS record type associated with it is a CNAME (Canonical Name) record.
+   - It points to the main domain or directly to the server's IP address (8.8.8.8 in this case).
+
+4. Server:
+   - A server is a physical or virtual machine that stores and delivers website content to users over the internet.
+   - It has an IP address (8.8.8.8 in this case) that allows other computers to locate it on the network.
+
+5. Web Server (Nginx):
+   - The web server (Nginx) handles incoming HTTP requests from users' browsers.
+   - It retrieves static content from the server's file system and sends it back to the user's browser.
+   - Nginx can also act as a reverse proxy, forwarding requests to the application server.
+
+6. Application Server:
+   - The application server processes dynamic content and business logic.
+   - It communicates with the web server to generate content dynamically based on user requests.
+   - In this scenario, it executes your codebase to generate the website's pages.
+
+7. Application Files (Code Base):
+   - These are the files that make up your website's application logic.
+   - They can include scripts, stylesheets, templates, and other resources required to render the website.
+
+8. Database (MySQL):
+   - The database stores and manages the website's data, such as user accounts, posts, or any other dynamic information.
+   - MySQL is used here as an example of a relational database management system.
+
+9. Communication with User's Computer:
+   - The communication happens over the HTTP protocol.
+   - When the user accesses "www.foobar.com," their browser sends an HTTP request to the server's IP address (8.8.8.8).
+   - The web server processes the request and communicates with the application server to generate dynamic content, if needed.
+   - The resulting content is sent back to the user's browser as an HTTP response.
+
+Issues with this Infrastructure:
+
+1. Single Point of Failure (SPOF):
+   - Since the entire infrastructure is hosted on a single server, any hardware or software failure can lead to a complete outage.
+   - If the server goes down, the website becomes inaccessible.
+
+2. Downtime during Maintenance:
+   - When maintenance is required (e.g., deploying new code), the web server needs to be restarted.
+   - This leads to downtime, during which the website is inaccessible to users.
+
+3. Scalability Challenges:
+   - As traffic increases, the single server can become overwhelmed, causing slow performance or crashes.
+   - Scaling up to handle higher traffic requires significant changes to the infrastructure, often beyond adding more servers.
