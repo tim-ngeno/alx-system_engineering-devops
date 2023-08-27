@@ -1,0 +1,25 @@
+https://imgur.com/a/dGipD5A
+
+
+- Load Balancer Cluster:
+  - Load balancers are added for distributing incoming traffic across multiple servers.
+  - A load balancer cluster provides redundancy and ensures high availability.
+  - If one load balancer fails, the other can continue serving traffic.
+
+- Server 1 and Server 2:
+  - Separate servers are used for improved isolation and redundancy.
+  - Each server hosts its own set of components: Nginx, App Server, and Database.
+
+- Nginx:
+  - Acts as a reverse proxy and load balancer for distributing requests.
+  - Helps offload SSL termination and efficiently handle incoming traffic.
+
+- App Server:
+  - Processes dynamic content and application logic.
+  - Splitting components onto separate servers can enhance performance and fault tolerance.
+
+- Database:
+  - Separate databases for each server enhance fault tolerance and isolation.
+  - Splitting the database instances can distribute the load and reduce contention.
+
+The architecture follows best practices for scalability, redundancy, and isolation by separating components onto different servers and setting up a load balancer cluster.
