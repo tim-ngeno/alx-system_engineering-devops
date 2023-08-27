@@ -1,0 +1,66 @@
+https://imgur.com/a/8cNFl04
+
+
+In this diagram:
+
+User: Represents the user accessing the website.
+www.foobar.com: The user's request to access the website.
+DNS - CNAME Record: Resolves the domain to an IP address.
+Load Balancer: Distributes incoming requests between Server 1 and Server 2.
+Server 1 and Server 2: Each contains Nginx, the application server, and the application files(Codebase).
+Nginx: Acts as a reverse proxy and handles communication between the user and the application server.
+App Server: Processes dynamic content and communicates with the database.
+App Files: Contains the application's codebase and related files.
+MySQL: Represents the Primary-Replica database cluster.
+
+
+Infrastructure Design:
+
+1. User Accesses the Website:
+   - The user enters "www.foobar.com" in their web browser and presses Enter.
+
+2. Domain Name (DNS - CNAME Record):
+   - The domain name "www.foobar.com" is resolved through DNS into an IP address.
+
+3. Load Balancer (HAproxy):
+   - Two servers are added for redundancy and load distribution.
+   - The load balancer (HAproxy) is configured with a round-robin distribution algorithm.
+   - The HAproxy evenly distributes incoming requests among the two servers.
+
+4. Server 1 and Server 2:
+   - Each server hosts the necessary components: Nginx, application server, and the application files (codebase).
+   - Nginx serves as a reverse proxy to direct requests to the appropriate application server.
+
+5. Application Server:
+   - Processes dynamic content, handles application logic, and generates responses.
+   - Communicates with the database to fetch or store data.
+
+6. Database (MySQL Primary-Replica Cluster):
+   - The database is set up as a Primary-Replica (Master-Slave) cluster for data redundancy and availability.
+   - The Primary node handles write operations, and the Replica node(s) replicate data from the Primary.
+   - This setup enhances fault tolerance and read scalability.
+
+Load Balancer Configuration:
+- Round-robin distribution algorithm: Each incoming request is sent to the next available server in a cycle.
+
+Active-Active vs. Active-Passive:
+- Active-Active: Both servers are actively serving traffic and sharing the load. This setup improves utilization and handles higher traffic.
+- Active-Passive: One server is active and handling traffic while the other is on standby. It's a failover setup, providing redundancy in case of failure.
+
+Database Primary-Replica Cluster:
+- Primary Node: Handles write operations, updates, and modifications. It's the authoritative source of data changes.
+- Replica Node: Replicates data from the Primary, used for read operations. Enhances read scalability and provides redundancy.
+
+
+Issues with this Infrastructure:
+
+1. Single Point of Failure (SPOF):
+   - The load balancer can become a single point of failure. If it fails, the whole system can be affected.
+   - The Primary database can also be a single point of failure. If it goes down, write operations may be impacted.
+
+2. Security Issues:
+   - There is no mention of a firewall, leaving the servers vulnerable to unauthorized access.
+   - Lack of HTTPS could expose data in transit to security risks.
+
+3. No Monitoring:
+   - Without monitoring, it's challenging to identify and address performance issues, outages, or resource bottlenecks.
