@@ -9,4 +9,4 @@ sudo apt-get install -y nginx
 echo 'Hello World!' | sudo tee /var/www/html/index.html
 
 # Reload the nginx configuration.
-sudo pkill -HUP nginx
+sudo service nginx restart
