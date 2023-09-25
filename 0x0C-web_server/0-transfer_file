@@ -11,5 +11,5 @@ if [[ "$#" -lt 3 ]]; then
     echo "$msg"
 else
     # scp -i ~/.ssh/id_rsa some ubuntu@18.209.152.248:~/
-    scp -i "$ssh_key" "$local_file" "$username"@"$server_addr":~/
+    scp -o StrictHostKeyChecking=no -i "$ssh_key" "$local_file" "$username"@"$server_addr":~/
 fi
