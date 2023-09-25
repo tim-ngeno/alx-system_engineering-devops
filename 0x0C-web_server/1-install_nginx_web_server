@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Install nginx on the web server, nginx should listen on port 80
+
+# Update apt repository and install nginx
+sudo apt update
+sudo apt-get install -y nginx
+
+# Make a backup of default nginx config
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+
+# Configure 'Hello World!' page
+echo 'server {
+     listen 80 default_server;
+     listen [::]:80 default_server;
+
+     root /var/www/html;
+     index index.html;
+
+     server_name _;
+
+     location / {
+     	      return 200 "Hello World!\n";
+     }
+}' | sudo tee /etc/nginx/sites-available/default
+
+# Reload the nginx configuration. Using a HUP signal instead of
+# systemctl sends a graceful restart(doesn't kill the master process)
+sudo pkill -HUP nginx
