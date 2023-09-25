@@ -21,7 +21,7 @@ echo 'server {
      location / {
      	      return 200 "Hello World!\n";
      }
-}' | sudo tee /etc/nginx/sites-available/default
+}' > /etc/nginx/sites-available/default
 
 # Reload the nginx configuration. Using a HUP signal instead of
 # systemctl sends a graceful restart(doesn't kill the master process)
