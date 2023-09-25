@@ -5,24 +5,8 @@
 sudo apt update
 sudo apt-get install -y nginx
 
-# Make a backup of default nginx config
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
-
 # Configure 'Hello World!' page
-echo 'server {
-     listen 80 default_server;
-     listen [::]:80 default_server;
+echo 'Hello World!' | sudo tee /var/www/html/index.html
 
-     root /var/www/html;
-     index index.html;
-
-     server_name _;
-
-     location / {
-     	      return 200 "Hello World!\n";
-     }
-}' > /etc/nginx/sites-available/default
-
-# Reload the nginx configuration. Using a HUP signal instead of
-# systemctl sends a graceful restart(doesn't kill the master process)
+# Reload the nginx configuration.
 sudo pkill -HUP nginx
