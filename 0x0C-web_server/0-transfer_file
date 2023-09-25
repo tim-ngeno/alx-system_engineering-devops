@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Transfers a file to my server
+
+msg="Usage: 0-transfer_file PATH_TO_FILE IP USERNAME PATH_TO_SSH_KEY"
+local_file="$1"
+server_addr="$2"
+username="$3"
+ssh_key="$4"
+
+if [[ "$#" -lt 3 ]]; then
+    echo "$msg"
+else
+    # scp -i ~/.ssh/id_rsa some ubuntu@18.209.152.248:~/
+    scp -i "$ssh_key" "$local_file" "$username"@"$server_addr":~/
+fi
