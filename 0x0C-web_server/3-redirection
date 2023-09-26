@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Set up redirection to another page
 
+link="https://www.youtube.com/watch?v=QH2-TGUlwu4"
+mod_conf="server_name _;\n\trewrite ^/redirect_me/$ $link permanent;"
+
 # Make sure nginx is installed
 sudo apt-get update
 sudo apt install -y nginx
@@ -9,7 +12,7 @@ sudo apt install -y nginx
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
 
 # Replace location block with redirect block
-sudo sed -i '/location \/ {/,/}/c\    location /redirect_me {\n        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n    }' /etc/nginx/sites-available/default
+sudo sed -i "s|server_name\ _;|$mod_conf|" /etc/nginx/sites-available/default
 
 # Reload configuration
 sudo service nginx restart
