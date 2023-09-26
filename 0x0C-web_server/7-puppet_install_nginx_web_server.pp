@@ -18,7 +18,7 @@ file_line { 'redirect 301':
   line   => "rewrite ^/redirect_me ${link} permanent;",
 }
 
-service { 'reload configuration':
-  ensure  => running,
+exec { 'reload configuration':
+  command => '/usr/sbin/service nginx restart',
   require => Package['Nginx'],
 }
