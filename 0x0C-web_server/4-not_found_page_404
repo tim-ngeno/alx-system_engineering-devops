@@ -5,9 +5,9 @@ link="https://www.youtube.com/watch?v=QH2-TGUlwu4"
 mod_conf="server_name _;\n\trewrite ^/redirect_me/$ $link permanent;"
 
 # Setup for custom 404 error pages
-error_location="location = /custom_404.html {\n\t\troot /var/www/html/;\n\t\tinternal;\n\t}"
+error_location="location = /custom_404.html {\n\t\troot /var/www/html/;\n\t\tinternal;\n\t"
 error_page_directive="\n\terror_page 404 /custom_404.html;\n\t$error_location"
-error_msg="}\n$error_page_directive\t}"
+error_msg="}\n$error_page_directive}"
 
 # Make sure nginx is installed
 sudo apt-get update
