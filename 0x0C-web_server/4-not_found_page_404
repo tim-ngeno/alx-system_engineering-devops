@@ -7,7 +7,7 @@ mod_conf="server_name _;\n\trewrite ^/redirect_me/$ $link permanent;"
 # Setup for custom 404 error pages
 error_location="location = /custom_404.html {\n\t\troot /var/www/html/;\n\t\tinternal;\n\t}"
 error_page_directive="\n\terror_page 404 /custom_404.html;\n\t$error_location"
-
+error_msg="}\n$error_page_directive\t}"
 
 # Make sure nginx is installed
 sudo apt-get update
@@ -16,7 +16,7 @@ sudo apt install -y nginx
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
 
 sudo sed -i "s|server_name\ _;|$mod_conf|" /etc/nginx/sites-available/default
-sudo sed -i "0,/}/ s|}|$error_page_directive|" /etc/nginx/sites-available/default
+sudo sed -i "0,/}/ s|}|$error_msg|" /etc/nginx/sites-available/default
 
 # Reload configuration
 sudo service nginx restart
