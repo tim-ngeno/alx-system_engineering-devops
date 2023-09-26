@@ -3,6 +3,9 @@
 
 link="https://www.youtube.com/watch?v=QH2-TGUlwu4"
 
+sudo mkdir /etc/nginx/html
+sudo touch /etc/nginx/html/index.html /etc/nginx/html/err_404.html
+
 echo "Hello World!" | sudo tee /etc/nginx/html/index.html
 echo "Ceci n'est pas une page" | sudo tee /etc/nginx/html/err_404.html
 
