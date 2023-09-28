@@ -29,7 +29,7 @@ server {
     root /var/www/html;
     index index.html;
 
-    locatioin / {
+    location / {
       try_files ${uri} ${uri}/ =404;
     }
 
