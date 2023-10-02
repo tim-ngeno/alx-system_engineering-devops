@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Install nginx on the web server, nginx should listen on port 80
+
+# Update apt repository and install nginx
+sudo apt update
+sudo apt-get install -y nginx
+
+# Configure 'Hello World!' page
+echo 'Hello World!' | sudo tee /var/www/html/index.html
+
+# Configure the server to include custom header
+echo "add_header X-Served-By: $HOSTNAME;" | sudo tee -a /etc/nginx/sites-available/default
+
+# Reload the nginx configuration.
+sudo service nginx restart
