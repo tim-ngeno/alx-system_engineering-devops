@@ -1,11 +1,11 @@
-# Ensure the nginx package is installed
+# Configure a custom header using puppet manifest
 include stdlib
 
 $link = 'https://www.youtube.com/watch?v=QH2-TGUlwu4'
 $content = "\trewrite ^/redirect_me/$ ${link} permanent;"
 $custom_header = "add_header X-Served-By \$hostname;"
 
-exec { 'update packages':
+exec { 'update apt packages':
   command => '/usr/bin/apt-get update'
 }
 
@@ -16,18 +16,18 @@ exec { 'restart nginx':
 
 package { 'nginx':
   ensure  => 'installed',
-  require => Exec['update packages']
+  require => Exec['update apt packages']
 }
 
 file { '/var/www/html/index.html':
   ensure  => 'present',
-  content => 'Holberton School',
+  content => 'Hello World!',
   mode    => '0644',
   owner   => 'root',
   group   => 'root'
 }
 
-file_line { 'Set 301 redirection':
+file_line { 'redirection 301':
   ensure   => 'present',
   after    => 'server_name\ _;',
   path     => '/etc/nginx/sites-available/default',
