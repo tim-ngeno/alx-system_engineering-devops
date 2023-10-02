@@ -1,6 +1,16 @@
 # Ensure the nginx package is installed
+exec { 'update apt':
+  command => 'sudo apt-get update',
+}
+
+exec { 'install nginx':
+  command => 'sudo apt-get install -y nginx',
+  require => Exec['update apt']
+}
+
 package { 'nginx':
-  ensure => present,
+  ensure  => present,
+  require => Exec['install nginx'],
 }
 
 # Ensure nginx service is running and enabled at boot
