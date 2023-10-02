@@ -1,60 +1,47 @@
-# Install and configure Nginx web server using puppet
+# Install and configure NGINX server using puppet manifest
 include stdlib
 
-# Update apt repositories
-exec { 'apt-update':
-  command => '/usr/bin/apt-get update',
+$link = 'https://www.youtube.com/watch?v=QH2-TGUlwu4'
+$redirect_content = "\trewrite ^/redirect_me/$ ${link} permanent;"
+
+exec { 'update apt packages':
+  command => '/usr/bin/apt-get update'
 }
 
-# Install Nginx package
-package { 'Nginx':
-  ensure  => 'installed',
-  require => Exec['apt-update'],
-}
-
-# Run Nginx service
-service { 'nginx service':
-  ensure    => running,
-  enable    => true,
-  require   => Package['Nginx'],
-  subscribe => File['/etc/nginx/sites-available/default'],
-}
-
-# NGINX CONFIGURATION
-$nginx_configuration = @("EOT")
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-    root /var/www/html;
-    index index.html;
-
-    location / {
-      try_files ${uri} ${uri}/ =404;
-    }
-
-    location /redirect_me {
-      return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-}
-| EOT
-
-# Default configuration for nginx site
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => $nginx_configuration,
-  require => Package['Nginx'],
-}
-
-
-# Content for html page
-file { '/var/www/html/index.html':
-  ensure  => file,
-  content => 'Hello World!\n',
-  require => Package['Nginx'],
-}
-
-exec { 'reload configuration':
+exec { 'restart nginx':
   command => '/usr/sbin/service nginx restart',
-  require => Package['Nginx'],
+  require => Package['nginx']
+}
+
+package { 'nginx':
+  ensure  => 'installed',
+  require => Exec['update apt packages']
+}
+
+file { '/var/www/html/index.html':
+  ensure  => 'present',
+  content => 'Hello World!',
+  mode    => '0644',
+  owner   => 'root',
+  group   => 'root'
+}
+
+file_line { 'redirection 301':
+  ensure   => 'present',
+  after    => 'server_name\ _;',
+  path     => '/etc/nginx/sites-available/default',
+  multiple => true,
+  line     => $redirect_content,
+  notify   => Exec['restart nginx'],
+  require  => File['/var/www/html/index.html']
+}
+
+file_line { 'Set X-Served-By header':
+  ensure   => 'present',
+  after    => 'http {',
+  path     => '/etc/nginx/nginx.conf',
+  multiple => true,
+  line     => $custom_header,
+  notify   => Exec['restart nginx'],
+  require  => File['/var/www/html/index.html']
 }
