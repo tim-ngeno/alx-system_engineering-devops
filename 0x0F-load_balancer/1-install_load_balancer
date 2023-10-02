@@ -2,32 +2,16 @@
 # Install and configure HAProxy on the load balancer `lb-01` server
 
 # update packages and install HAProxy
-sudo apt-get update
-sudo apt-get install -y haproxy
+sudo apt update
+sudo apt install -y haproxy
 
 # setup HAProxy configuration
 cat <<EOL | sudo tee /etc/haproxy/haproxy.cfg
-globals
-		log /dev/log	local0
-		log /dev/log 	local1 notice
-		stats timeout 30s
-		user haproxy
-		group haproxy
-
-defaults
-        log     global
-        mode    http
-        option  httplog
-        option  dontlognull
-        timeout connect 5000
-        timeout client  50000
-        timeout server  50000
-
-frontend web_frontend
+frontend web-frontend
 	    bind *:80
-	    default_backend web_backend
+	    default_backend web-backend
 
-backend web_backend
+backend web-backend
         balance roundrobin
 	    server web-01 18.209.152.248:80 check
 	    server web-02 54.157.179.19:80 check
