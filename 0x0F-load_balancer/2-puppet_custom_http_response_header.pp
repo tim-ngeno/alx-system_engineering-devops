@@ -1,30 +1,48 @@
 # Ensure the nginx package is installed
-exec { 'update apt':
-  command => 'sudo apt-get update',
+include stdlib
+
+$link = 'https://www.youtube.com/watch?v=QH2-TGUlwu4'
+$content = "\trewrite ^/redirect_me/$ ${link} permanent;"
+$custom_header = "add_header X-Served-By \$hostname;"
+
+exec { 'update packages':
+  command => '/usr/bin/apt-get update'
 }
 
-exec { 'install nginx':
-  command => 'sudo apt-get install -y nginx',
-  require => Exec['update apt']
+exec { 'restart nginx':
+  command => '/usr/sbin/service nginx restart',
+  require => Package['nginx']
 }
 
 package { 'nginx':
-  ensure  => present,
-  require => Exec['install nginx'],
+  ensure  => 'installed',
+  require => Exec['update packages']
 }
 
-# Ensure nginx service is running and enabled at boot
-service { 'nginx':
-  ensure  => running,
-  enable  => true,
-  require => Package['nginx'], # Start service after installation
+file { '/var/www/html/index.html':
+  ensure  => 'present',
+  content => 'Holberton School',
+  mode    => '0644',
+  owner   => 'root',
+  group   => 'root'
 }
 
-# Add the custom header to nginx configuration
-file_line { 'nginx_custom_header':
-  ensure  => present,
-  path    => '/etc/nginx/sites-available/default',
-  line    => 'add_header X-Served-By $hostname;',
-  notify  => Service['nginx'],
-  require => Package['nginx'],
+file_line { 'Set 301 redirection':
+  ensure   => 'present',
+  after    => 'server_name\ _;',
+  path     => '/etc/nginx/sites-available/default',
+  multiple => true,
+  line     => $content,
+  notify   => Exec['restart nginx'],
+  require  => File['/var/www/html/index.html']
+}
+
+file_line { 'Set X-Served-By header':
+  ensure   => 'present',
+  after    => 'http {',
+  path     => '/etc/nginx/nginx.conf',
+  multiple => true,
+  line     => $custom_header,
+  notify   => Exec['restart nginx'],
+  require  => File['/var/www/html/index.html']
 }
