@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Scan domain types and get info on which IP it points to
+
+domain="$1"
+subdomain="$2"
+
+get_host_info () {
+    target="$1"
+    host_record=$(dig "$target")
+
+    # Process and print record info if valid
+    echo "$host_record" | awk -v val="$subdomain" '
+    {
+        if ($4 == "A" || $4 == "AAAA" || $4 == "CNAME") {
+            print "The subdomain", val, "is a", $4, "record and points to", $5
+        }
+    }'
+}
+
+if [ "$domain" ] && [ "$subdomain" ]; then
+    get_host_info "$subdomain.$domain"
+elif [ "$domain" ]; then
+    for val in www lb-01 web-01 web-02; do
+	subdomain=$val
+	get_host_info "$val.$domain"
+    done
+fi
