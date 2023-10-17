@@ -32,11 +32,3 @@ fi
 
 # Restart the nginx service
 service nginx restart
-
-# Error handling
-if [ $? -ne 0 ]; then
-    echo "Error restarting Nginx. Please check your configuration."
-    exit 1
-fi
-
-echo "Nginx has been configured and restarted successfully."
