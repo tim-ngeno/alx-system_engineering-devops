@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # run whoami command under user passed as argument
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <username>"
-    exit 1
+user="$1"
+if [ "$user" ]
+then
+    chsh -s "$(which bash)" "$user" && su "$user" -c "whoami"
 fi
-
-# Run the whoami command as the user passed in argument
-su "$1" -c 'whoami'
