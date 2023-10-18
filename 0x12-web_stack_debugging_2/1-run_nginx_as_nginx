@@ -6,29 +6,29 @@ pkill apache2
 
 # If port 80 for IPv4 is being listened to, it is changed to port 8080
 if grep -q "listen 80" /etc/nginx/sites-available/default ; then
-    sed -i "s/listen 80/listen 8080/" /etc/nginx/sites-available/default
+    sudo sed -i "s/listen 80/listen 8080/" /etc/nginx/sites-available/default
 fi
 
 # If port 80 for IPv6 is being listened to, it is changed to port 8080
 if grep -q "listen \[::\]:80" /etc/nginx/sites-available/default ; then
-    sed -i "s/listen \[::\]:80/listen \[::\]:8080/" /etc/nginx/sites-available/default
+    sudo sed -i "s/listen \[::\]:80/listen \[::\]:8080/" /etc/nginx/sites-available/default
 fi
 
 # Check if nginx is set to run as user nginx in nginx.conf
 if ! grep -q "^user nginx;" /etc/nginx/nginx.conf; then
-    sed -i "1iuser nginx;" /etc/nginx/nginx.conf
+    sudo sed -i "1iuser nginx;" /etc/nginx/nginx.conf
 fi
 
 # Update Nginx settings file owner and group
-chown nginx:nginx /etc/nginx/nginx.conf
+sudo chown nginx:nginx /etc/nginx/nginx.conf
 
 # Update Nginx settings file permissions
-chmod 0644 /etc/nginx/nginx.conf
+sudo chmod 0644 /etc/nginx/nginx.conf
 
 # Check if nginx user exists, if not, create it.
 if ! id "nginx" &>/dev/null; then
-    useradd -r -s /sbin/nologin nginx
+    sudo useradd -r -s /sbin/nologin nginx
 fi
 
 # Restart the nginx service
-service nginx restart
+sudo service nginx restart
