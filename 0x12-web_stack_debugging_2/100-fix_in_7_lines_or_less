@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Run nginx as the nginx user short fix
-pkill apache2
-sed -i 's/listen 80/listen 8080/' /etc/nginx/sites-available/default
-sed -i 's/listen \[::\]:80/listen \[::\]:8080/' /etc/nginx/sites-available/default
-echo "user nginx;" | cat - /etc/nginx/nginx.conf > temp && mv temp /etc/nginx/nginx.conf
-service nginx restart
+sudo pkill apache2
+sudo sed -i 's/listen 80/listen 8080/' /etc/nginx/sites-available/default
+sudo sed -i 's/listen \[::\]:80/listen \[::\]:8080/' /etc/nginx/sites-available/default
+sudo chmod 0644 /etc/nginx/nginx.conf
+sudo service nginx restart
