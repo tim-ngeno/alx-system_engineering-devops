@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # run whoami command under user passed as argument
 user="$1"
-if [ "$user" ]
+if getent passwd "$user" | cut -d: -f6 | grep -q '^$'
 then
+    echo "$user"
+else
     su "$user" -c "whoami"
 fi
