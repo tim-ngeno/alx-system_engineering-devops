@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Fetch data from Reddit API and parse it"""
 
-import requests
 from collections import Counter
+import requests
 
 
 def count_words(subreddit, word_list, hot_list=None, after=None):
